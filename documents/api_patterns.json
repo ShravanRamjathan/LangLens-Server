@@ -1,0 +1,155 @@
+{
+  "api_styles": [
+    {
+      "name": "REST (REpresentational State Transfer)",
+      "description": "The most popular architectural style for creating web services. REST is not a protocol but a set of constraints that uses standard HTTP methods (GET, POST, PUT, DELETE) to operate on resources (data). APIs following these constraints are called 'RESTful'.",
+      "key_principles": [
+        "Stateless: Each request from a client to the server must contain all the information needed to understand and process the request.",
+        "Client-Server Architecture: The client and server are separated, allowing them to evolve independently.",
+        "Cacheable: Responses can be explicitly marked as cacheable to improve performance.",
+        "Uniform Interface: Resources are identified by URIs (e.g., /users/123), and their state is manipulated using standard HTTP verbs.",
+        "Layered System: The client may connect to an intermediary (like a load balancer) without knowing it's not the end server."
+      ],
+      "best_use_cases": [
+        "Public APIs: Its simplicity and use of standard HTTP make it easy for any developer to understand and consume.",
+        "Standard CRUD Operations: Ideal for resource-oriented applications where you create, read, update, and delete data (e.g., blogging platforms, e-commerce).",
+        "Mobile App Backends: A straightforward way to provide data to mobile clients.",
+        "Decoupled Systems: Excellent for separating a front-end client (like a React or Angular app) from a back-end server."
+      ],
+      "strengths": [
+        "Simplicity and Readability: The use of standard HTTP methods makes REST APIs easy to understand and use.",
+        "Scalability: The stateless nature of REST allows for easy scaling of server components.",
+        "Flexibility: Supports various data formats, with JSON being the most common.",
+        "Wide Adoption: Vast community support, tooling, and documentation are available."
+      ],
+      "weaknesses": [
+        "Over-fetching: A client often receives more data than it needs because endpoints return fixed data structures (e.g., getting a full user object when you only need the name).",
+        "Under-fetching: A client may need to make multiple requests to get all the data it needs (e.g., first fetching a blog post, then making separate requests for its comments and author details).",
+        "No Type Safety: Standard REST with JSON does not have a built-in schema or type system, leading to potential data-related errors.",
+        "Can become chatty due to the need for multiple requests."
+      ],
+      "data_format": "Primarily JSON, but also supports XML, HTML, and plain text.",
+      "transport_protocol": "HTTP/HTTPS",
+      "common_tools_and_languages": ["Python (Flask, FastAPI, Django REST Framework)", "JavaScript (Node.js, Express)", "Java (Spring Boot)", "C# (.NET)", "Go", "Ruby (Rails)"]
+    },
+    {
+      "name": "GraphQL",
+      "description": "A query language for APIs developed by Facebook. Unlike REST, where the server defines the shape of the data, GraphQL empowers the client to request exactly the data it needs, and nothing more, often in a single request.",
+      "key_principles": [
+        "Declarative Data Fetching: Clients query for the specific data fields they need.",
+        "Single Endpoint: All requests are typically sent to a single endpoint (e.g., /graphql) via a POST request.",
+        "Strongly Typed: The API is defined by a schema using the GraphQL Schema Definition Language (SDL), which serves as a contract between the client and server.",
+        "Hierarchical: The query shape mirrors the shape of the JSON response."
+      ],
+      "best_use_cases": [
+        "Mobile Applications: Great for saving bandwidth and reducing network requests, which is critical on mobile networks.",
+        "Complex UIs with Nested Data: Ideal for applications where the frontend needs data from multiple resources at once (e.g., a social media dashboard showing posts, likes, and user profiles).",
+        "Applications with Many Different Clients: When you have multiple clients (e.g., web, iOS, Android) that each have different data requirements.",
+        "Aggregating Data from Multiple Sources: GraphQL can act as a single API gateway that fetches data from several downstream microservices."
+      ],
+      "strengths": [
+        "Prevents Over-fetching and Under-fetching: Clients get exactly what they ask for in one round trip.",
+        "Strongly Typed Schema: Provides excellent developer tooling, introspection, and validation, catching errors at development time.",
+        "API Evolution without Versioning: You can add new fields and types to a GraphQL API without impacting existing queries.",
+        "Introspective: Clients can query the schema itself for details about what queries are supported."
+      ],
+      "weaknesses": [
+        "Complexity on the Server-side: Implementing a GraphQL server can be more complex than a REST API, requiring careful handling of query resolvers.",
+        "No Built-in Caching: Standard HTTP caching methods are not applicable because all queries go to a single endpoint. Caching must be implemented at the client or application level.",
+        "Can lead to performance issues if a client submits an overly complex or resource-intensive query.",
+        "Steeper Learning Curve than REST."
+      ],
+      "data_format": "JSON",
+      "transport_protocol": "Primarily HTTP/HTTPS, but can be used over any transport layer.",
+      "common_tools_and_languages": ["JavaScript (Apollo, Relay)", "Python (Graphene, Ariadne)", "Java (GraphQL-Java)", "Ruby", "Go"]
+    },
+    {
+      "name": "gRPC (gRPC Remote Procedure Call)",
+      "description": "A high-performance, open-source Remote Procedure Call (RPC) framework developed by Google. It is designed for efficient communication between microservices. gRPC uses Protocol Buffers as its data serialization format and HTTP/2 for transport.",
+      "key_principles": [
+        "Service and Method Based: Instead of resources, you define services with specific methods (functions) that can be called remotely.",
+        "Schema-first with Protocol Buffers: You define the service interface and the structure of the message data in a `.proto` file.",
+        "High Performance: Uses binary serialization (Protocol Buffers) and HTTP/2, which is much faster than text-based formats over HTTP/1.1.",
+        "Supports Streaming: Allows for bidirectional streaming, where both client and server can send a stream of messages."
+      ],
+      "best_use_cases": [
+        "Microservice Communication: The primary use case. Perfect for fast, low-latency, internal communication between services in a distributed system.",
+        "Performance-critical Applications: When you need to process large amounts of data with minimal overhead.",
+        "Real-time Applications: Bidirectional streaming is ideal for applications that need to push data continuously (e.g., live financial data).",
+        "Network-constrained Environments: Efficient binary serialization is well-suited for IoT devices or mobile clients where bandwidth is limited."
+      ],
+      "strengths": [
+        "Exceptional Performance: Very low latency and high throughput due to HTTP/2 and binary data format.",
+        "Strictly Typed Contracts: Protocol Buffers provide strong message typing and validation, reducing runtime errors.",
+        "Code Generation: Can automatically generate client and server-side code in many languages from the `.proto` file.",
+        "Advanced features like bidirectional streaming and deadlines/timeouts are built-in."
+      ],
+      "weaknesses": [
+        "Limited Browser Support: Because it relies on HTTP/2 features, it cannot be called directly from a browser without a proxy layer (like gRPC-Web).",
+        "Not Human-Readable: The binary format is not easily inspectable or debuggable without special tools.",
+        "Less Flexible than REST: Changes to the service definition often require re-generating and updating both client and server code.",
+        "Mainly suited for internal communication, not public-facing APIs."
+      ],
+      "data_format": "Protocol Buffers (Protobuf)",
+      "transport_protocol": "HTTP/2",
+      "common_tools_and_languages": ["Go", "Java", "C++", "Python", "C#", "Rust"]
+    },
+    {
+      "name": "WebSockets",
+      "description": "A communication protocol that provides a full-duplex, persistent connection between a client and a server. Unlike HTTP, where the connection is closed after a request-response cycle, WebSockets keep the connection open, allowing for real-time, two-way data exchange.",
+      "key_principles": [
+        "Persistent Connection: The TCP connection stays open, eliminating the overhead of establishing new connections for each message.",
+        "Full-Duplex: Data can be sent from client to server and server to client simultaneously.",
+        "Stateful: Both the client and server are aware of the connection state."
+      ],
+      "best_use_cases": [
+        "Real-time Applications: The absolute best choice for applications needing instant data push.",
+        "Chat Applications: Sending and receiving messages instantly between users.",
+        "Live Financial/Sports Tickers: Pushing live data updates to thousands of connected clients.",
+        "Multiplayer Online Games: Sending player locations and actions with very low latency.",
+        "Collaborative Editing Tools (like Google Docs): Syncing changes between users in real-time."
+      ],
+      "strengths": [
+        "Extremely Low Latency: Once the connection is established, data exchange is very fast.",
+        "Real-time and Bidirectional: The server can push data to the client without the client having to request it first.",
+        "Efficient: Reduces network traffic overhead compared to repeatedly polling an HTTP endpoint."
+      ],
+      "weaknesses": [
+        "Not for standard CRUD operations: It is not a replacement for REST. It's designed for a different purpose (real-time communication).",
+        "State Management: Can be complex to manage at scale, as servers need to keep track of every open connection.",
+        "Proxy and Load Balancer Complexity: Requires proper configuration of networking infrastructure to handle persistent connections."
+      ],
+      "data_format": "Can be any format (JSON, plain text, binary).",
+      "transport_protocol": "TCP (initiates with an HTTP handshake)",
+      "common_tools_and_languages": ["JavaScript (Socket.IO, ws)", "Python (Websockets, Channels)", "Go", "Java"]
+    },
+    {
+        "name": "Webhooks (Reverse APIs)",
+        "description": "A design pattern where a server application sends an automated HTTP POST request to a client-specified URL in response to an event. Instead of the client polling for updates, the server notifies the client when something happens.",
+        "key_principles": [
+            "Event-driven: Communication is triggered by a specific event occurring in the provider's system.",
+            "Asynchronous: The client receives data whenever it's available, without needing to make a request.",
+            "Client-defined Endpoint: The client provides a URL to the server that the server will call."
+        ],
+        "best_use_cases": [
+            "Notifications and Alerts: Notifying your system about an event happening in a third-party service.",
+            "Payment Processing: A payment gateway (like Stripe) notifying your e-commerce site that a payment has been successfully processed.",
+            "CI/CD Pipelines: A source control system (like GitHub) notifying your build server to start a new build after a push.",
+            "Connecting Disparate Systems: Integrating services that don't need constant communication."
+        ],
+        "strengths": [
+            "Efficient and Resource-friendly: Eliminates the need for constant polling, saving resources for both client and server.",
+            "Real-time (or near real-time): Provides updates as soon as events occur.",
+            "Simple to implement for event providers and easy to consume for clients."
+        ],
+        "weaknesses": [
+            "Reliability and Security: The client endpoint must be highly available to receive notifications and must securely validate incoming requests to ensure they are legitimate.",
+            "Debugging can be difficult because you have to wait for the external event to trigger the request.",
+            "The client is responsible for exposing a public-facing URL, which can be a security concern."
+        ],
+        "data_format": "Almost always JSON.",
+        "transport_protocol": "HTTP/HTTPS",
+        "common_tools_and_languages": ["Implemented by nearly all server-side languages and consumed by services that require event notifications."]
+    }
+  ]
+}

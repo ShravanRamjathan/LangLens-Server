@@ -1,0 +1,241 @@
+{
+  "design_patterns": [
+    {
+      "category": "Creational Patterns",
+      "description": "These patterns provide various object creation mechanisms, which increase flexibility and reuse of existing code. They are all about class instantiation and object creation.",
+      "patterns": [
+        {
+          "name": "Singleton",
+          "description": "Ensures a class has only one instance, and provides a global point of access to it.",
+          "problem_it_solves": "You need to ensure that only one object of a particular class is ever created. This is useful for managing shared resources like a database connection, a file manager, or a settings/configuration object that should be consistent across the entire application.",
+          "when_to_apply": [
+            "When you need a single, shared resource for the entire system (e.g., a logger, a configuration manager, a connection pool).",
+            "When you want to control access to a resource to prevent conflicting state changes.",
+            "When you need a global point of access to an object, but want to protect its instance from being overwritten."
+          ],
+          "strengths": [
+            "Guarantees that there's only one instance of a class.",
+            "Provides a convenient, global access point to that instance.",
+            "The instance is not created until it is first requested (lazy initialization)."
+          ],
+          "weaknesses": [
+            "Violates the Single Responsibility Principle, as the class is responsible for both its own logic and managing its instance.",
+            "Can make unit testing difficult because it introduces a global state, making it hard to isolate components.",
+            "Can hide dependencies and make code less transparent.",
+            "Can be problematic in multi-threaded environments if not implemented carefully (requires synchronization)."
+          ],
+          "real_world_analogy": "The government of a country. There can only be one official government, and it serves as a global point of access for identity, security, and resource management within the nation."
+        },
+        {
+          "name": "Factory Method",
+          "description": "Defines an interface for creating an object, but lets subclasses alter the type of objects that will be created.",
+          "problem_it_solves": "You have a class that cannot anticipate the class of objects it needs to create. You want to delegate the responsibility of instantiation to its subclasses.",
+          "when_to_apply": [
+            "When a class doesn't know in advance which class of objects it needs to create.",
+            "When you want to provide users of your library or framework a way to extend its internal components.",
+            "When you want to separate the product's construction code from the code that actually uses the product."
+          ],
+          "strengths": [
+            "Avoids tight coupling between the creator and the concrete products.",
+            "Follows the Single Responsibility Principle, as you can move product creation logic into one place.",
+            "Follows the Open/Closed Principle, as you can introduce new types of products without breaking existing client code."
+          ],
+          "weaknesses": [
+            "The code can become more complicated as you need to introduce a new hierarchy of creator classes.",
+            "Can require a large number of subclasses if you have many product types."
+          ],
+          "real_world_analogy": "A logistics company. The main `Logistics` class defines a method `createTransport()`, but the actual transport object created depends on the subclass. `RoadLogistics` will create a `Truck` object, while `SeaLogistics` will create a `Ship` object."
+        },
+        {
+          "name": "Abstract Factory",
+          "description": "Lets you produce families of related objects without specifying their concrete classes.",
+          "problem_it_solves": "Your system needs to create multiple 'families' of related products, but you want to ensure that the products from one family are never mixed with products from another. For example, creating UI elements for different operating systems (macOS buttons and checkboxes should be used together, never mixed with Windows ones).",
+          "when_to_apply": [
+            "When your code needs to work with various families of related products, but you don't want it to depend on the concrete classes of those products.",
+            "When you have a family of related product objects that are designed to be used together."
+          ],
+          "strengths": [
+            "Ensures that the products you get from a factory are compatible with each other.",
+            "Avoids tight coupling between concrete products and client code.",
+            "Follows the Single Responsibility Principle and Open/Closed Principle."
+          ],
+          "weaknesses": [
+            "The code can become very complex due to all the new interfaces and classes required.",
+            "Adding a new type of product to the factory is difficult because the abstract factory interface must be changed, which means all of its subclasses must be updated."
+          ],
+          "real_world_analogy": "An IKEA furniture store. The store is an abstract factory that provides a family of related products (chairs, tables, sofas) in a specific style (e.g., 'Modern', 'Victorian'). A 'Modern' factory creates `ModernChair` and `ModernSofa` objects, while a 'Victorian' factory creates `VictorianChair` and `VictorianSofa` objects. You use one factory to furnish a whole room in a consistent style."
+        },
+        {
+          "name": "Builder",
+          "description": "Lets you construct complex objects step by step. The pattern allows you to produce different types and representations of an object using the same construction code.",
+          "problem_it_solves": "You have an object with a large number of optional parameters or configurations (a 'telescoping constructor' problem). Creating it with a single constructor is unwieldy. The Builder pattern separates the construction of a complex object from its representation.",
+          "when_to_apply": [
+            "When you need to create a complex object that requires multiple configuration steps or has many optional parameters.",
+            "When you want to construct different representations of the same object (e.g., a car with a V8 engine and a trip computer, vs. a car with an electric motor and no GPS).",
+            "To isolate the complex construction logic from the object's business logic."
+          ],
+          "strengths": [
+            "Allows you to create objects step-by-step, making constructors cleaner.",
+            "Enables the creation of different representations of an object.",
+            "Isolates the complex construction code from the main business logic."
+          ],
+          "weaknesses": [
+            "Can be verbose, as it requires creating a separate Builder class for each type of object you want to build.",
+            "Increases the overall complexity of the code base."
+          ],
+          "real_world_analogy": "Ordering a custom meal at Subway. You don't tell the sandwich artist everything at once. You are the 'Director', the sandwich artist is the 'Builder'. You direct them step-by-step: choose bread, then protein, then cheese, then veggies. The final product (a sandwich) is built incrementally based on your directions, but the construction process is the same for every customer."
+        }
+      ]
+    },
+    {
+      "category": "Structural Patterns",
+      "description": "These patterns explain how to assemble objects and classes into larger structures, while keeping these structures flexible and efficient. They focus on how objects are composed.",
+      "patterns": [
+        {
+          "name": "Adapter",
+          "description": "Allows objects with incompatible interfaces to collaborate. It acts as a wrapper between two objects, catching calls for one object and transforming them into a format the other object can understand.",
+          "problem_it_solves": "You need to make two classes with incompatible interfaces work together. You cannot change the source code of one of the classes, so you create a 'middle-man' class to handle the translation.",
+          "when_to_apply": [
+            "When you want to use an existing class, but its interface is not compatible with the rest of your code.",
+            "When you want to reuse several existing subclasses that lack some common functionality that can’t be added to the superclass."
+          ],
+          "strengths": [
+            "Separates the interface conversion logic from the business logic, following the Single Responsibility Principle.",
+            "Allows you to use third-party classes or legacy code that you can't modify."
+          ],
+          "weaknesses": [
+            "Increases the overall complexity of the code by introducing a new set of classes and interfaces."
+          ],
+          "real_world_analogy": "A travel power adapter. Your European phone charger (one interface) can't plug into a US wall socket (a different interface). The adapter sits between them, receiving the US-style plug and providing a European-style socket so the two can work together."
+        },
+        {
+          "name": "Decorator",
+          "description": "Lets you attach new behaviors to objects by placing them inside special wrapper objects that contain the behaviors. This allows behavior to be added to an individual object without affecting the behavior of other objects from the same class.",
+          "problem_it_solves": "You want to add extra responsibilities to an object dynamically at runtime without using inheritance. Inheritance is static and applies to the entire class, while Decorators can be applied to individual objects.",
+          "when_to_apply": [
+            "When you need to be able to assign extra behaviors to objects at runtime without breaking the code that uses these objects.",
+            "When it's impractical to use subclassing to add functionality (e.g., you would need too many subclasses to cover all combinations of features)."
+          ],
+          "strengths": [
+            "You can add or remove responsibilities from an object at runtime.",
+            "You can combine several behaviors by wrapping an object with multiple decorators.",
+            "Follows the Single Responsibility Principle, as you can divide a monolithic class into several smaller classes."
+          ],
+          "weaknesses": [
+            "It can be hard to remove a specific wrapper from the decorators stack.",
+            "It can be complicated to implement decorators in such a way that their behavior doesn't depend on the order in the stack.",
+            "Can result in a large number of small, similar-looking classes in the code."
+          ],
+          "real_world_analogy": "Putting on clothes. You start with a base `Person` object. You can then 'decorate' this person with a `Shirt`, then a `Jacket`, then a `Scarf`. Each item adds new behavior (warmth, style) without changing the `Person` class itself. You can add or remove these layers dynamically."
+        },
+        {
+          "name": "Facade",
+          "description": "Provides a simplified, higher-level interface to a complex subsystem of classes. Instead of interacting with dozens of different classes, a client interacts with just one 'Facade' object.",
+          "problem_it_solves": "A system has a large number of complex classes and dependencies. You want to provide a simple way for client code to interact with this subsystem without needing to understand its intricate details.",
+          "when_to_apply": [
+            "When you want to provide a simple, limited interface to a complex subsystem.",
+            "When you want to structure a subsystem into layers. A Facade can be the entry point to each layer."
+          ],
+          "strengths": [
+            "Isolates your code from the complexity of a subsystem.",
+            "Decouples the client from the internal components of the subsystem, making the subsystem easier to modify and refactor.",
+            "Improves readability and usability of the code."
+          ],
+          "weaknesses": [
+            "A Facade object can become a 'god object' coupled to all classes of an application if not designed carefully.",
+            "It does not restrict access to the subsystem, so advanced clients can still access the underlying classes if they need to."
+          ],
+          "real_world_analogy": "A customer service representative at a call center. When you call a large company, you don't talk to the billing department, technical support, and the shipping department separately. You talk to a single customer service agent (the Facade), who then communicates with all the complex, internal subsystems on your behalf and gives you a simple answer."
+        },
+        {
+          "name": "Proxy",
+          "description": "Provides a surrogate or placeholder for another object to control access to it. It has the same interface as the original object, so the client doesn't know it is interacting with a proxy.",
+          "problem_it_solves": "You need to control access to an object, or add some behavior before or after the request gets to the original object. This is useful for things like lazy initialization, access control, or logging.",
+          "when_to_apply": [
+            "For lazy initialization (Virtual Proxy): creating a heavyweight object only when it is actually needed.",
+            "For access control (Protection Proxy): restricting a client's access to the real object.",
+            "For logging requests (Logging Proxy): keeping a history of requests to the service object.",
+            "For caching results (Caching Proxy): caching the results of expensive operations."
+          ],
+          "strengths": [
+            "You can manage the lifecycle of the service object without the client knowing.",
+            "The proxy works even if the service object isn't ready or is unavailable.",
+            "Can provide security and caching layers transparently."
+          ],
+          "weaknesses": [
+            "Can add a layer of complexity to the code.",
+            "The response from the service might get delayed due to the proxy's overhead."
+          ],
+          "real_world_analogy": "A credit card. The credit card (Proxy) is a placeholder for your bank account (the real object). You use it to make payments instead of carrying around large amounts of cash. The card controls access to your funds, performs security checks (validates the PIN), and logs transactions, all while having the same interface as cash ('spend money')."
+        }
+      ]
+    },
+    {
+      "category": "Behavioral Patterns",
+      "description": "These patterns are concerned with algorithms and the assignment of responsibilities between objects. They describe how objects interact and communicate with each other.",
+      "patterns": [
+        {
+          "name": "Observer",
+          "description": "Defines a one-to-many dependency between objects so that when one object (the subject) changes state, all its dependents (observers) are notified and updated automatically.",
+          "problem_it_solves": "You need to update multiple objects whenever the state of another object changes, but you don't want the objects to be tightly coupled. The object that changes state should not need to know who is watching it.",
+          "when_to_apply": [
+            "When changes to the state of one object may require changing other objects, and the set of other objects is not known beforehand or is dynamic.",
+            "In event-driven systems. Widely used in GUI toolkits to separate a data model from the UI elements that display it."
+          ],
+          "strengths": [
+            "Decouples the subject and its observers.",
+            "You can add new observers at runtime without changing the subject's code.",
+            "Allows for a broadcast-style communication between objects."
+          ],
+          "weaknesses": [
+            "Observers are updated in a random order, which can be problematic if the order matters.",
+            "The subject can leak memory if observers do not unregister themselves properly ('lapsed listener' problem)."
+          ],
+          "real_world_analogy": "A magazine subscription. The publisher (Subject) maintains a list of subscribers (Observers). When a new issue is published (a state change), the publisher notifies all subscribers by sending them a copy. The publisher doesn't need to know who the individual subscribers are, only that they need to be notified."
+        },
+        {
+          "name": "Strategy",
+          "description": "Defines a family of algorithms, encapsulates each one, and makes them interchangeable. Strategy lets the algorithm vary independently from clients that use it.",
+          "problem_it_solves": "You have a class that needs to perform a certain action, but there are multiple ways (algorithms) to do it, and you want to be able to switch between them at runtime. Hardcoding all algorithms in one class with `if-else` statements is messy and hard to maintain.",
+          "when_to_apply": [
+            "When you want to use different variants of an algorithm within an object and be able to switch from one algorithm to another during runtime.",
+            "When you have a lot of similar classes that only differ in the way they execute some behavior.",
+            "To isolate the business logic of a class from the implementation details of algorithms that are not that important to this logic."
+          ],
+          "strengths": [
+            "You can swap algorithms used inside an object at runtime.",
+            "You can isolate the implementation details of an algorithm from the code that uses it.",
+            "You can replace inheritance with composition, which is often more flexible.",
+            "Follows the Open/Closed principle."
+          ],
+          "weaknesses": [
+            "Increases the number of objects and classes in your application.",
+            "Clients must be aware of the different strategies to be able to select a proper one."
+          ],
+          "real_world_analogy": "A navigation app. When you want to travel from point A to B, the app (Context) asks you to choose a travel strategy (e.g., `WalkingStrategy`, `DrivingStrategy`, `PublicTransitStrategy`). Each strategy is a separate algorithm for calculating the best route. You can easily switch between them, and the main app doesn't need to know the details of how each route is calculated."
+        },
+        {
+          "name": "Command",
+          "description": "Turns a request into a stand-alone object that contains all information about the request. This transformation lets you pass requests as a method argument, delay or queue a request's execution, and support undoable operations.",
+          "problem_it_solves": "You need to decouple the object that invokes an operation from the object that knows how to perform it. You want to queue operations, schedule their execution, or support undo/redo functionality.",
+          "when_to_apply": [
+            "When you want to parameterize objects with operations.",
+            "When you want to queue operations, schedule their execution, or execute them remotely.",
+            "When you want to implement reversible operations (undo/redo)."
+          ],
+          "strengths": [
+            "Decouples the class that invokes the operation from the class that performs the operation.",
+            "Makes it easy to add new commands without changing existing code.",
+            "You can assemble a sequence of simple commands into a complex one.",
+            "You can implement undo/redo."
+          ],
+          "weaknesses": [
+            "The code may become more complicated since you are introducing a whole new layer between senders and receivers.",
+            "Can result in a large number of command classes."
+          ],
+          "real_world_analogy": "Ordering food at a restaurant. You (Client) don't go into the kitchen and cook your own food. Instead, you create an order (Command object) and give it to the waiter (Invoker). The waiter takes the order and places it on a queue in the kitchen. The chef (Receiver) then picks up the order and knows how to execute it (cook the meal). The order itself encapsulates all the information about the request."
+        }
+      ]
+    }
+  ]
+}

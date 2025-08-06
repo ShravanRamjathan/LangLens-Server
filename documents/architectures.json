@@ -1,0 +1,281 @@
+{
+  "architectures": [
+    {
+      "architecture_name": "Monolithic",
+      "description": "A traditional architectural style where an entire application is built as a single, indivisible unit. All components, including the user interface, business logic, and data access layer, are tightly coupled and run as a single process.",
+      "suitable_languages": [
+        "Java",
+        "C#",
+        "Python",
+        "Ruby",
+        "PHP"
+      ],
+      "project_types": [
+        "Small to medium-sized web applications",
+        "Startups and MVPs (Minimum Viable Products)",
+        "Internal business applications",
+        "Projects with a small development team"
+      ],
+      "environments": [
+        "On-premise servers",
+        "Single Cloud VM (e.g., AWS EC2, Azure VM)",
+        "Containerized environments (using Docker for single-container apps)"
+      ],
+      "strengths": [
+        "Simplicity: Easy to develop, test, and deploy initially. [2, 3]",
+        "Performance: Efficient communication between components as they are all in the same process. [2, 3]",
+        "Easier Debugging: All code is in one place, making it straightforward to trace requests and debug. [2, 3]",
+        "Lower initial cost and faster development for small projects."
+      ],
+      "weaknesses": [
+        "Scalability Challenges: The entire application must be scaled, not just the high-demand components. [2, 3]",
+        "Low Reliability: A failure in one component can bring down the entire application. [2, 3]",
+        "Difficult to Maintain: The codebase can become large, complex, and hard to understand over time. [2, 3]",
+        "Technology Stack Rigidity: Difficult to adopt new technologies or languages without a complete rewrite. [2]",
+        "Slower deployment cycles as the application grows."
+      ],
+      "typical_components": [
+        "User Interface (UI)",
+        "Business Logic Layer",
+        "Data Access Layer (DAL)",
+        "Single Relational Database"
+      ],
+      "use_cases_examples": [
+        "Wordpress",
+        "Joomla",
+        "Many legacy enterprise systems",
+        "Initial versions of many large applications before they were re-architected."
+      ],
+      "tools_frameworks": [
+        "Spring Boot (Java)",
+        "Ruby on Rails (Ruby)",
+        "Django (Python)",
+        "ASP.NET (C#)",
+        "Laravel (PHP)"
+      ]
+    },
+    {
+      "architecture_name": "Microservices",
+      "description": "An architectural style that structures an application as a collection of loosely coupled, independently deployable services. Each service is self-contained, owns its data, and communicates with others over a network, typically using APIs.",
+      "suitable_languages": [
+        "Go",
+        "Python",
+        "Java",
+        "Node.js (JavaScript)",
+        "C#",
+        "Rust"
+      ],
+      "project_types": [
+        "Large, complex, and scalable cloud applications",
+        "E-commerce platforms",
+        "Streaming services",
+        "Applications with diverse technology needs",
+        "Systems requiring high availability and fault tolerance"
+      ],
+      "environments": [
+        "Cloud (AWS, Azure, Google Cloud)",
+        "Container Orchestration Platforms",
+        "Hybrid Cloud"
+      ],
+      "strengths": [
+        "Improved Scalability: Services can be scaled independently based on demand. [5, 6]",
+        "Technology Flexibility: Each service can be written in the most appropriate language and framework. [5, 6]",
+        "High Reliability: Failure in one service does not take down the entire application. [5, 6]",
+        "Easier Maintenance: Smaller, focused codebases are easier to understand and manage. [5]",
+        "Faster, independent deployment cycles for each service."
+      ],
+      "weaknesses": [
+        "Increased Complexity: Managing a distributed system is much harder (networking, security, monitoring). [5, 6]",
+        "Higher Operational Overhead: Requires robust CI/CD, monitoring, and orchestration. [6]",
+        "Network Latency: Communication between services over a network is slower than in-process calls. [5, 6]",
+        "Data Consistency: Ensuring data consistency across multiple databases is challenging. [5]",
+        "Higher initial cost and development effort."
+      ],
+      "typical_components": [
+        "API Gateway",
+        "Service Discovery",
+        "Message Queue / Event Bus",
+        "Containerization",
+        "Orchestration",
+        "Individual Databases per service"
+      ],
+      "use_cases_examples": [
+        "Netflix",
+        "Amazon",
+        "Uber",
+        "Spotify"
+      ],
+      "tools_frameworks": [
+        "Docker",
+        "Kubernetes",
+        "Spring Boot",
+        "Go kit",
+        "FastAPI (Python)",
+        "gRPC",
+        "RabbitMQ",
+        "Kafka"
+      ]
+    },
+    {
+      "architecture_name": "Serverless",
+      "description": "A cloud-native architecture where the cloud provider manages the server infrastructure and automatically allocates resources. Code is executed in short-lived, stateless compute containers known as Functions-as-a-Service (FaaS).",
+      "suitable_languages": [
+        "Node.js (JavaScript)",
+        "Python",
+        "Go",
+        "Java",
+        "C#"
+      ],
+      "project_types": [
+        "Event-driven applications (e.g., image processing on upload)",
+        "Real-time data processing",
+        "IoT backends",
+        "Scheduled tasks or cron jobs",
+        "API backends with variable traffic"
+      ],
+      "environments": [
+        "Cloud (AWS, Azure, Google Cloud)"
+      ],
+      "strengths": [
+        "Reduced Operational Cost: Pay-per-execution model means you don't pay for idle time. [1, 9]",
+        "No Server Management: Developers focus on code, not on provisioning or managing servers. [1, 9]",
+        "Automatic Scaling: The cloud provider handles scaling based on load. [1, 9]",
+        "Faster time-to-market for certain applications."
+      ],
+      "weaknesses": [
+        "Vendor Lock-in: Code is often tied to a specific cloud provider's services. [1, 9]",
+        "Cold Starts: There can be latency for the first request if the function is not 'warm'. [1, 9]",
+        "Execution Time Limits: Functions are typically limited to short execution durations. [1]",
+        "Statelessness: Managing application state can be complex and requires external services (e.g., databases).",
+        "Debugging and Monitoring can be more difficult than in traditional environments."
+      ],
+      "typical_components": [
+        "FaaS (e.g., AWS Lambda, Azure Functions)",
+        "API Gateway",
+        "Cloud Storage (e.g., S3, Blob Storage)",
+        "NoSQL Databases (e.g., DynamoDB, Cosmos DB)",
+        "Event Sources (e.g., message queues, database triggers)"
+      ],
+      "use_cases_examples": [
+        "Acast (podcast platform)",
+        "Coca-Cola (vending machine management)",
+        "Figma (real-time collaboration features)",
+        "Backend for mobile apps"
+      ],
+      "tools_frameworks": [
+        "AWS Lambda",
+        "Azure Functions",
+        "Google Cloud Functions",
+        "Serverless Framework",
+        "AWS SAM (Serverless Application Model)"
+      ]
+    },
+    {
+      "architecture_name": "Model-View-Controller (MVC)",
+      "description": "A design pattern that separates an application into three interconnected components: the Model (data and business logic), the View (user interface), and the Controller (handles user input and interacts with the Model and View).",
+      "suitable_languages": [
+        "Java",
+        "C#",
+        "Python",
+        "Ruby",
+        "PHP",
+        "JavaScript"
+      ],
+      "project_types": [
+        "Web applications with user interfaces",
+        "Desktop GUI applications",
+        "Applications where the UI and business logic need to be developed independently"
+      ],
+      "environments": [
+        "Web Servers (On-prem or Cloud)",
+        "Desktop OS"
+      ],
+      "strengths": [
+        "Separation of Concerns: Isolates business logic from the UI, improving organization and maintainability. [8]",
+        "Simultaneous Development: Different developers can work on the Model, View, and Controller at the same time. [8]",
+        "Code Reusability: The same Model can be used with different Views. [8]",
+        "Testability: Components can be tested independently."
+      ],
+      "weaknesses": [
+        "Increased Complexity: Can be overkill for small applications.",
+        "Tight Coupling within Frameworks: The components can become tightly coupled within some MVC frameworks.",
+        "View and Controller can become bloated with logic if not managed carefully.",
+        "Can be less suitable for highly interactive, real-time applications where a different pattern (e.g., MVVM) might be better."
+      ],
+      "typical_components": [
+        "Model",
+        "View",
+        "Controller",
+        "Router"
+      ],
+      "use_cases_examples": [
+        "Most modern web application frameworks implement a variation of MVC.",
+        "Countless e-commerce, blogging, and social media websites."
+      ],
+      "tools_frameworks": [
+        "Ruby on Rails",
+        "Django (MVT - Model-View-Template)",
+        "ASP.NET MVC",
+        "Spring MVC",
+        "Angular (client-side MVC/MVVM)",
+        "Laravel"
+      ]
+    },
+    {
+      "architecture_name": "Event-Driven Architecture (EDA)",
+      "description": "A software architecture paradigm promoting the production, detection, consumption of, and reaction to events. Components are decoupled and communicate asynchronously by sending and receiving messages (events) via a central event bus or message broker.",
+      "suitable_languages": [
+        "Java",
+        "Go",
+        "Python",
+        "Node.js (JavaScript)",
+        "C#"
+      ],
+      "project_types": [
+        "Real-time systems",
+        "IoT applications",
+        "Financial systems (e.g., stock trading)",
+        "Asynchronous workflows",
+        "Microservices-based applications"
+      ],
+      "environments": [
+        "Cloud (AWS, Azure, Google Cloud)",
+        "On-premise",
+        "Distributed Systems"
+      ],
+      "strengths": [
+        "Loose Coupling: Producers and consumers of events are completely decoupled and don't need to know about each other. [7]",
+        "High Scalability and Resilience: Services can fail and recover without affecting other services. [7]",
+        "Real-time Responsiveness: Enables applications to respond to events as they happen.",
+        "Flexibility: Easy to add new event consumers to the system without changing existing services."
+      ],
+      "weaknesses": [
+        "Complexity: Managing asynchronous workflows, error handling, and ensuring message delivery can be complex. [7]",
+        "Difficult to Debug: Tracing a flow of events through multiple services can be challenging.",
+        "No Guaranteed Delivery: Requires careful configuration to handle message loss or out-of-order delivery.",
+        "Potential for cascading failures if not designed carefully."
+      ],
+      "typical_components": [
+        "Event Producer",
+        "Event Consumer",
+        "Message Queue / Broker (e.g., RabbitMQ, Kafka)",
+        "Event Channel",
+        "Event Bus"
+      ],
+      "use_cases_examples": [
+        "Ride-sharing apps (updating driver locations, processing ride requests)",
+        "E-commerce order processing systems",
+        "Social media notifications",
+        "IoT sensor data processing"
+      ],
+      "tools_frameworks": [
+        "Apache Kafka",
+        "RabbitMQ",
+        "AWS SQS (Simple Queue Service)",
+        "Google Cloud Pub/Sub",
+        "Azure Event Grid",
+        "Akka (for building concurrent, distributed apps)"
+      ]
+    }
+  ]
+}
