@@ -34,12 +34,12 @@ function getTopKDocuments(queryEmbedding, documents, k = 5) {
 
 async function loadDocuments() {
   const files = [
-    "./documents/languages.json",
-    "./documents/dsa.json",
-    "./documents/design_patterns.json",
-    "./documents/architectures.json",
     "./documents/api_patterns.json",
-    "./documents/projects",
+    "./documents/architectures.json",
+    "./documents/design_patterns.json",
+    "./documents/dsa.json",
+    "./documents/languages.json",
+    "./documents/projects.json",
   ];
 
   const documents = [];
@@ -49,74 +49,107 @@ async function loadDocuments() {
       const content = await fs.readFile(file, "utf-8");
       const json = JSON.parse(content);
 
-      if (file.includes("tour_details")) {
-        json.forEach((tour) => {
-          const detailsSnippet =
-            tour.details?.map((d) => d.body).join(" ") || "";
+      // Handler for api_patterns.json
+      if (json.api_styles) {
+        json.api_styles.forEach((style) => {
           documents.push({
-            id: `tour_details_${tour.name}`,
+            id: `api_${style.name.replace(/\s+/g, "_")}`,
             data: {
-              title: tour.name,
-              snippet: (tour.description || "") + " " + detailsSnippet,
-            },
-          });
-        });
-      } else if (file.includes("tours")) {
-        json.forEach((tour) => {
-          documents.push({
-            id: `tours_${tour.name}`,
-            data: {
-              title: tour.name,
-              snippet: tour.product_line || "",
-            },
-          });
-        });
-      } else if (file.includes("rest_countries")) {
-        json.forEach((country) => {
-          const languageList = Object.values(country.languages || {}).join(
-            ", "
-          );
-          documents.push({
-            id: `rest_countries_${country.name?.common}`,
-            data: {
-              title: country.name?.common || "",
-              snippet: `Official Name: ${country.name?.official}. Capital: ${
-                country.capital?.[0] || ""
-              }. Region: ${country.region}. Subregion: ${
-                country.subregion
-              }. Population: ${
-                country.population
-              }. Languages: ${languageList}. Area: ${country.area} sq km.`,
-            },
-          });
-        });
-      } else if (file.includes("unesco_sites")) {
-        json.query?.row?.forEach((site) => {
-          documents.push({
-            id: `unesco_sites_${site.site}`,
-            data: {
-              title: site.site || "",
-              snippet: site.short_description?.replace(/<[^>]+>/g, "") || "",
-            },
-          });
-        });
-      } else if (file.includes("merged_countries")) {
-        json.forEach((country) => {
-          documents.push({
-            id: `merged_countries_${country.name}`,
-            data: {
-              title: country.name || "",
-              snippet: `Capital: ${country.capital}, Region: ${country.region}, Population: ${country.population}, Language: ${country.language}, Currency: ${country.currency}`,
+              title: `${style.name} API Style`,
+              snippet: `${
+                style.description
+              } Best use cases: ${style.best_use_cases.join(
+                ", "
+              )}. Strengths include: ${style.strengths.join(", ")}.`,
             },
           });
         });
       }
+      // Handler for architectures.json
+      else if (json.architectures) {
+        json.architectures.forEach((arch) => {
+          documents.push({
+            id: `arch_${arch.architecture_name.replace(/\s+/g, "_")}`,
+            data: {
+              title: `${arch.architecture_name} Architecture`,
+              snippet: `${
+                arch.description
+              } This architecture is suitable for projects like ${arch.project_types.join(
+                ", "
+              )}. Key strengths are: ${arch.strengths.join(", ")}.`,
+            },
+          });
+        });
+      }
+      // Handler for design_patterns.json
+      else if (json.design_patterns) {
+        json.design_patterns.forEach((category) => {
+          category.patterns.forEach((pattern) => {
+            documents.push({
+              id: `pattern_${pattern.name.replace(/\s+/g, "_")}`,
+              data: {
+                title: `${pattern.name} (Design Pattern)`,
+                snippet: `Category: ${category.category}. Purpose: ${pattern.description}. Use this pattern when you want to solve this problem: ${pattern.problem_it_solves}`,
+              },
+            });
+          });
+        });
+      }
+      // Handler for dsa.json (Data Structures and Algorithms)
+      else if (json.data_structures_and_algorithms) {
+        json.data_structures_and_algorithms.forEach((item) => {
+          const exampleProject = item.project_applications[0];
+          documents.push({
+            id: `dsa_${item.name.replace(/\s+/g, "_")}`,
+            data: {
+              title: `Data Structure/Algorithm: ${item.name}`,
+              snippet: `${item.description} It is typically used for: ${item.how_it_is_used}. A sample project is a ${exampleProject.project}, where it is applied like this: ${exampleProject.application}`,
+            },
+          });
+        });
+      }
+      // Handler for languages.json
+      else if (json.programming_languages) {
+        json.programming_languages.forEach((lang) => {
+          documents.push({
+            id: `lang_${lang.name.replace(/\s+/g, "_")}`,
+            data: {
+              title: `Programming Language: ${lang.name}`,
+              snippet: `Known for: ${lang.known_for}. Ideal for ${
+                lang.ideal_for
+              }. Strengths: ${lang.strengths.join(
+                ", "
+              )}. Paradigms: ${lang.paradigms.join(", ")}. Typing: ${
+                lang.typing
+              }.`,
+            },
+          });
+        });
+      }
+      // Handler for the main projects.json file
+      else if (Array.isArray(json) && json[0]?.project_ideas) {
+        json.forEach((category) => {
+          category.project_ideas.forEach((project) => {
+            documents.push({
+              id: `project_${project.name.replace(/\s+/g, "_")}`,
+              data: {
+                title: `Project Idea: ${project.name}`,
+                snippet: `Category: ${category.category}. Description: ${
+                  project.description
+                } Suitable languages include: ${project.languages.join(
+                  ", "
+                )}. Difficulty: ${project.difficulty}.`,
+              },
+            });
+          });
+        });
+      }
     } catch (err) {
-      console.error(`Error reading ${file}:`, err);
+      console.error(`Error reading or parsing ${file}:`, err);
     }
   }
 
-  console.log(`Loaded ${documents.length} documents`);
+  console.log(`Loaded ${documents.length} documents from all files.`);
   return documents;
 }
 
@@ -235,8 +268,8 @@ app.post("/generate", async (req, res) => {
         text: `${doc.data.title}. ${doc.data.snippet}`,
       })),
       preamble:
-        "You are a professional and friendly expert travel assistant named Y-TravelBot, working for Y-Travels. You must answer the users questions using ONLY the information provided in the documents below whenever possible. If a topic is not covered by the documents, you may use your own knowledge — but ONLY in the domain of travel and tourism. Stay strictly within this domain: travel, countries, cities, attractions, history, geography, local cuisine, culture, and things to do. DO NOT provide information about politics, economics, safety advice, or unrelated topics. Always write in a helpful, engaging tone suitable for a travel website audience. If country or place not refered to in documents please tell user to click generate itinerary in the nav bar",
-      temperature: 0.3,
+        "You are a professional and friendly coding assistant.  You must answer the users questions using ONLY the information provided in the documents below whenever possible. If a topic is not covered by the documents, you may use your own knowledge — but ONLY in the domain of programming and project architectures. Stay strictly within this domain: programming,programming languges, best practices in architectures patterns, design patterns, project types, data structures, algorithms, fun projects, project based learning and things to do. DO NOT provide information about spagethi code, bad practices, cheap work arounds, innefficient patterns or algorithims. Always write in a helpful, engaging tone,  and it may be more technical and comprehensive for developers of all experience levels. If language or pattern not refered to in documents please tell user to give more insight",
+      temperature: 0.4,
     });
 
     console.log("Cohere chat response:", JSON.stringify(response, null, 2));
@@ -251,22 +284,6 @@ app.post("/generate", async (req, res) => {
   }
 });
 
-app.post("/holiday", async (req, res) => {
-  const { userInput } = req.body;
-
-  try {
-    const response = await cohere.chat({
-      message: `Generate a holiday itinerary based on this request: "${userInput}". Format the response as Day-wise itinerary.`,
-      temperature: 0.7,
-      max_tokens: 1000,
-    });
-
-    res.json({ itinerary: response.text });
-  } catch (err) {
-    console.error("Error:", err);
-    res.status(500).json({ error: "Failed to generate itinerary" });
-  }
-});
 
 app.listen(5000, () => {
   console.log("Listening on http://localhost:5000");
