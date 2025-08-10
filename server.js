@@ -153,10 +153,6 @@ async function loadDocuments() {
   return documents;
 }
 
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 async function embedDocumentsInBatches(documents, batchSize = 96) {
   const allEmbeddings = [];
 
@@ -177,7 +173,7 @@ async function embedDocumentsInBatches(documents, batchSize = 96) {
     allEmbeddings.push(...response.embeddings);
 
     // Delay between batches to avoid 429
-    await sleep(10000);
+    
   }
 
   return allEmbeddings;
